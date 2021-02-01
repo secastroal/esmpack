@@ -8,7 +8,7 @@ calc.mcent.ti(x, id, data, expand = TRUE)
 \arguments{
    \item{x}{vector to specify the time-invariant variable.}
    \item{id}{vector to specify the subject id variable.}
-   \item{data}{optional data frame that contains the vairables specified above.}
+   \item{data}{optional data frame that contains the variables specified above.}
    \item{expand}{logical indicating whether to expand the returned vector so it can be added to the dataset as a new vairable (default is \code{TRUE}).}
 }
 \details{
