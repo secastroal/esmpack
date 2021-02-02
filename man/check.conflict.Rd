@@ -17,7 +17,7 @@ check.conflict(x, y, data, threshold, out=1)
 \value{
    When \code{out = 1} or \code{out = "logical"}, the function simply returns a logical vector indicating whether the values are too similar (\code{TRUE}) or not (\code{FALSE}).
 
-   When \code{out = 2} or \code{out = "ind"}, the function returns a vector with the row indexes where the values of the two variables were too similar to each other.
+   When \code{out = 2} or \code{out = "ind"}, the function returns a vector with the row indeces where the values of the two variables were too similar to each other.
 
    When \code{out = 3} or \code{out = "data"}, the function returns the data for those rows where the the two variables were too similar to each other.
 }
