@@ -73,15 +73,13 @@ expand.esm <- function(data, id, time, tinterval = 1, include = NULL, exclude = 
     }
   }
   
-  # Create reduced dataset given the variables to include or exclude
-  data <- data[, vars]
-  varnames <- names(data)
-  nvars    <- length(varnames)
   
   # New data.frame excluding the variables id and time
   
   if (!(is.character(c(id, time)) | is.numeric(c(id, time)))) 
     stop("Argument 'id' and 'time' must either be a character or a numeric vector.")
+  if ((is.character(id) & is.numeric(time)) | (is.numeric(id) & is.character(time)))
+    stop("Both arguments 'id' and 'time' must either be a character or a numeric vector")
   if (is.character(c(id, time))) {
     idvar.pos <- lapply(c(id, time), function(x) {
       pos <- charmatch(x, varnames)
@@ -103,11 +101,12 @@ expand.esm <- function(data, id, time, tinterval = 1, include = NULL, exclude = 
     idvar <- (1:length(varnames))[idvar.pos]
   }
   
-  variables <- data[, -idvar]
+  variables <- data[, setdiff(vars, idvar)]
   id        <- data[, idvar[1]]
   time      <- data[, idvar[2]]
   
-  nsub <- nsub(id)
+  nsub  <- nsub(id)
+  nvars <- length(vars)
   
   # identify time-invariant variables
   tinvar.pos <- apply(variables, 2, function(x) check.timeinvar(x, id))
@@ -124,11 +123,20 @@ expand.esm <- function(data, id, time, tinterval = 1, include = NULL, exclude = 
   data.temp[, 2] <- rep(timemin:timemax, nsub)
   
   for (i in 1:(dim(data.temp)[1])) {
-    varying.scores <- tvars[(id == data.temp[i,1] & timenew == data.temp[i,2]),]
-    if(length(unlist(varying.scores)) != 0) {
-      data.temp[i, 3:(2 + dim(tvars)[2])] <- varying.scores
+    varying.scores <- data.frame(tvars[(id == data.temp[i,1] & timenew == data.temp[i,2]),])
+    if (length(unlist(varying.scores)) != 0) {
+      if (dim(varying.scores)[1] >= 2) {
+        data.temp[i, 3:(2 + dim(tvars)[2])] <- varying.scores[1, ]
+        warning("Person ", data.temp[i, 1], " has ", dim(varying.scores)[1],
+                " observations in the time interval between ", (data.temp[i,2] - 1) * tinterval,
+                " and ", data.temp[i,2] * tinterval, ".\nOnly, the first observation was included." )
+      } else {
+        data.temp[i, 3:(2 + dim(tvars)[2])] <- varying.scores
+        }
     }
-    data.temp[i, (dim(tvars)[2] + 3):nvars] <- data.frame(tinvar[id == data.temp[i,1],])[1,]
+    if (dim(tinvar)[2] != 0) {
+      data.temp[i, (dim(tvars)[2] + 3):nvars] <- data.frame(tinvar[id == data.temp[i,1],])[1,]
+    }
   }
   
   data.temp[, 2] <- data.temp[, 2] * tinterval
