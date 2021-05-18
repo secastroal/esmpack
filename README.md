@@ -1,9 +1,9 @@
 esmpack: A Package to Facilitate Preparation and Management of ESM/EMA Data
 ===========================================================================
 
-[![Build Status](https://travis-ci.org/wviechtb/esmpack.svg?branch=master)](https://travis-ci.org/wviechtb/esmpack)
+[![R build status](https://github.com/wviechtb/esmpack/workflows/R-CMD-check/badge.svg)](https://github.com/wviechtb/esmpack/actions)
 ![CRAN Version](https://www.r-pkg.org/badges/version/esmpack)
-![devel Version](https://img.shields.io/badge/devel-0.1--14-brightgreen.svg)
+![devel Version](https://img.shields.io/badge/devel-0.1--17-brightgreen.svg)
 
 ## Description
 
@@ -15,8 +15,9 @@ You can also read the documentation online at [https://wviechtb.github.io/esmpac
 
 ## Installation
 
-After installing the [remotes](https://cran.r-project.org/package=remotes) package with ```install.packages("remotes")```, the development version of the `esmpack` package can be installed with:
+The development version of the `esmpack` package can be installed with:
 ```r
+install.packages("remotes")
 remotes::install_github("wviechtb/esmpack")
 ```
 
